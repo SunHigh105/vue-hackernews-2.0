@@ -9,7 +9,8 @@
     "build": "rimraf dist && npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "test": "jest"
   },
   "engines": {
     "node": ">=7.0",
@@ -32,8 +33,10 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
+    "@vue/test-utils": "^1.2.0",
     "autoprefixer": "^7.1.6",
     "babel-core": "^6.26.0",
+    "babel-jest": "^26.6.3",
     "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-preset-env": "^1.6.1",
@@ -41,11 +44,13 @@
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.5",
     "friendly-errors-webpack-plugin": "^1.6.1",
+    "jest": "^26.6.3",
     "rimraf": "^2.6.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "sw-precache-webpack-plugin": "^0.11.4",
     "url-loader": "^0.6.2",
+    "vue-jest": "^3.0.7",
     "vue-loader": "^15.3.0",
     "vue-template-compiler": "^2.5.22",
     "webpack": "^3.8.1",
@@ -53,5 +58,16 @@
     "webpack-hot-middleware": "^2.20.0",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "vue-jest"
+    }
   }
 }
