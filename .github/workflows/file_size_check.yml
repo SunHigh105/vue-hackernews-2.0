@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        run: find ./public/ -size +5k
-        run: echo 'File Size Check'
+      - run: find ./public/ -size +5k
+      - run: echo 'File Size Check'
   pull-request-comment:
     runs-on: ubuntu-latest
     steps:
