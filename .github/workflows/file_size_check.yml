@@ -17,4 +17,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-            github.issues.createComment({ issue_number, owner, repo, body: 'large size file exist: ${{ TARGET_FILES }}'' });
+            github.issues.createComment({ issue_number, owner, repo, body: 'large size file exist: ${{ env.TARGET_FILES }}'' });
