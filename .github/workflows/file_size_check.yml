@@ -1,21 +1,15 @@
 name: file-size-check
-on:
-  pull_request:
-    types: [opened, reopened]
+on: [pull_request]
 jobs:
-  check-file-size:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: find ./public/ -size +5k
-      - run: echo 'File Size Check'
-  pull-request-comment:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@0.3.0
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Add pull request about file size
+      uses: actions/github-script@0.3.0
+      run: sh file_size_check.sh
         if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-            github.issues.createComment({ issue_number, owner, repo, body: 'Hello world ! 👋' });
+            github.issues.createComment({ issue_number, owner, repo, body: 'large size file exist: ${{ TARGET_FILES }}'' });
