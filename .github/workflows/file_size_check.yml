@@ -9,6 +9,13 @@ jobs:
 
       # - name: Set target files
       #   run: sh file_size_check.sh
+      - name: Setup node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      
+      - name: npm install
+        run: npm install
 
       - name: Add comment on pull request about file size
         uses: ./
