@@ -1,4 +1,6 @@
 const { exec } = require('child_process');
+const core = require('@actions/core');
+const github = require('@actions/github');
 
 const checkFileSize = () => {
   exec('sh file_size_check.sh', (error, stdout, stderr) => {
@@ -8,20 +10,32 @@ const checkFileSize = () => {
     }
 
     return stdout;
-    // console.log(`stdout: ${stdout}`);
-    // console.log(`stderr: ${stderr}`);
   });
 }
 
-const addCommentOnPullRequest = () => {
-  const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-  github.issues.createComment({ issue_number, owner, repo, body: `large size file exist: ${checkFileSize()}` });
-};
+async function run() {
+  const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
 
-(() => {
-  try {
-    addCommentOnPullRequest();
-  } catch (err) {
-    console.log(err);
+  if ( typeof GITHUB_TOKEN !== 'string' ) {
+    throw new Error('Invalid GITHUB_TOKEN: did you forget to set it in your action config?');
   }
-});
+
+  const { context = {} } = github;
+  const { pull_request } = context.payload;
+
+  if ( !pull_request ) {
+    throw new Error('Could not find pull request!')
+  };
+
+  console.log(`Found pull request: ${pull_request.number}`);
+
+  const octokit = github.getOctokit(GITHUB_TOKEN);
+
+  await octokit.issues.createComment({
+    ...context.repo,
+    issue_number: pull_request.number,
+    body: `large size file exists: ${checkFileSize()}`,
+  });
+}
+
+run().catch(e => core.setFailed(e.message));

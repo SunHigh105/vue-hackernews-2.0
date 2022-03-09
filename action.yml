@@ -1,0 +1,6 @@
+name: File Size Check
+description: Check file size
+
+runs:
+  using: 'node14'
+  main: file_size_check.js
