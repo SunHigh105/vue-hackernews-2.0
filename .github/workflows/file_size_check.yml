@@ -14,8 +14,11 @@ jobs:
         with:
           node-version: 16.x
       
-      - name: npm install
-        run: npm install
+      - name: Install @actions/core
+        run: npm install --save-dev @actions/core
+
+      - name: Install @actions/github
+        run: npm install --save-dev @actions/github
 
       - name: Add comment on pull request about file size
         uses: ./
