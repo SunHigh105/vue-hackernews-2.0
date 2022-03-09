@@ -2,18 +2,24 @@ const { exec } = require('child_process');
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const checkFileSize = () => {
-  exec('sh file_size_check.sh', (error, stdout, stderr) => {
-    if (error) {
-      console.log(`exec error: ${error}`);
-      return;
-    }
+exec('sh file_size_check.sh', async (error, stdout, stderr) => {
+  if (error) {
+    console.log(`exec error: ${error}`);
+    return;
+  }
+  
+  const targetFiles = stdout;
 
-    return stdout;
-  });
-}
+  if (targetFiles === '') return;
 
-async function run() {
+  try {
+    await createCommentOnPullRequest(`Large size file exists: ${targetFiles}`);
+  } catch (e) {
+    core.setFailed(e.message);
+  }
+});
+
+const createCommentOnPullRequest = async body => {
   const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
 
   if ( typeof GITHUB_TOKEN !== 'string' ) {
@@ -34,9 +40,6 @@ async function run() {
   await octokit.rest.issues.createComment({
     ...context.repo,
     issue_number: pull_request.number,
-    body: 'large size file exists',
-    // body: `large size file exists: ${checkFileSize()}`,
+    body: body,
   });
 }
-
-run().catch(e => core.setFailed(e.message));
