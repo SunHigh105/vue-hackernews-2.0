@@ -32,6 +32,8 @@
     "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0",
     "autoprefixer": "^7.1.6",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

@@ -1,0 +1,31 @@
+name: file-size-check
+on: [pull_request]
+jobs:
+  file-size-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # - name: Set target files
+      #   run: sh file_size_check.sh
+      - name: Setup node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      
+      - name: Install @actions/core
+        run: npm install --save-dev @actions/core
+
+      - name: Install @actions/github
+        run: npm install --save-dev @actions/github
+
+      - name: Add comment on pull request about file size
+        uses: ./
+        if: github.event_name == 'pull_request'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # pattern: file_size_check.js
+          # script: |
+          #   const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+          #   github.issues.createComment({ issue_number, owner, repo, body: 'large size file exist: ${{ sh file_size_check.sh }}'' });

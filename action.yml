@@ -1,0 +1,11 @@
+name: File Size Check
+description: Check file size
+
+inputs:
+  GITHUB_TOKEN:
+    description: 'Github token'
+    required: true
+
+runs:
+  using: 'node16'
+  main: file_size_check.js
