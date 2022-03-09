@@ -15,6 +15,7 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
-            github.issues.createComment({ issue_number, owner, repo, body: 'large size file exist: ${{ sh file_size_check.sh }}'' });
+          pattern: file_size_check.js
+          # script: |
+          #   const { issue: { number: issue_number }, repo: { owner, repo }  } = context;
+          #   github.issues.createComment({ issue_number, owner, repo, body: 'large size file exist: ${{ sh file_size_check.sh }}'' });

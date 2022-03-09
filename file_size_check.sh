@@ -1,1 +1,2 @@
-echo "TARGET_FILES=$(find ./public/ -size +5k | sed 's/\.//g')" >> $GITHUB_ENV
+find ./public/ -size +5k | sed 's/\.//g'
+# find ./public/ -size +3k | sed 's/\.//g'
