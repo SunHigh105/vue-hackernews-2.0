@@ -12,6 +12,8 @@ jobs:
         
       - name: Setup node
       - uses: actions/setup-node@v1
+      
+      - name: Install node
       - run: npm install
 
       - name: Add pull request about file size
